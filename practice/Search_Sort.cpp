@@ -61,7 +61,7 @@ public:
     {
         if (search_algo(roll))
         {
-            cout << "Found" << "n";
+            cout << "Found\n";
             return;
         }
         cout << "Not Found\n";
@@ -89,7 +89,6 @@ public:
         for (int i = 0; i < j; i++)
         {
             arr[i] = temp[i];
-            index = i;
         }
         index += 1;
     }

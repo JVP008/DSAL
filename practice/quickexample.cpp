@@ -55,9 +55,8 @@ public:
     {
         if (low < high)
         {
-            int pi;
+            int pi; // this changes becuase of &(reference) ok
             partition(low, high, pi);
-
             quickSort(low, pi - 1);
             quickSort(pi + 1, high);
         }

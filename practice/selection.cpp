@@ -9,6 +9,7 @@ void selection(int arr[],int n){
             // break;  this is stupid like we want THE SMALLEST
             }
         }  
+        //no change -> not found
         if (min_index!=i){
             swap(arr[min_index],arr[i]);
         }

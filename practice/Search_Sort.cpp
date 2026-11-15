@@ -24,15 +24,62 @@ private:
 
 public:
     Student() : name(""), roll(-1), sgpa(-1) {}
-    Student(int roll, string name, float sgpa) : name(name), roll(roll), sgpa(sgpa) {}
+    Student(int roll_, string name_, float sgpa_) : name(name_), roll(roll_), sgpa(sgpa_) {}
     friend class StudentMang;
 };
 class StudentMang
 {
 private:
     int index = 0;
-    Student arr[5] = {};
-    void sort_algo() {}
+    Student arr[5] = {}; // automatically stores the placeholder values
+    int partition(Student arr_[], int l, int h)
+    {
+        Student pivot = arr_[l];
+
+        // Count how many are strictly less than pivot (only among l+1..h)
+        int cnt = 0;
+        for (int i = l + 1; i <= h; i++)
+        {
+            if (arr_[i].sgpa < pivot.sgpa)
+                cnt++;
+        }
+        int pivot_index = l + cnt;
+        swap(arr_[l], arr_[pivot_index]);
+
+        // Now place < pivot to the left, >= pivot to the right
+        int i = l, j = h;
+        while (i < pivot_index && j > pivot_index)
+        {
+            while (i < pivot_index && arr_[i].sgpa < pivot.sgpa)
+                i++;
+            while (j > pivot_index && arr_[j].sgpa >= pivot.sgpa)
+                j--;
+            if (i < pivot_index && j > pivot_index)
+            {
+                swap(arr_[i], arr_[j]);
+                i++;
+                j--;
+            }
+        }
+        return pivot_index;
+    }
+    void quick_sort(Student arr_[], int l, int h)
+    {
+        if (l >= h)
+        {
+            return;
+        }
+        int part = partition(arr_, l, h);
+        quick_sort(arr_, l, part - 1);
+        quick_sort(arr_, part + 1, h);
+    }
+    void sort_students()
+    {
+        int n = sizeof(arr) / sizeof(arr[0]);
+        int l = 0;
+        int h = n - 1;
+        quick_sort(arr, l, h);
+    }
     bool search_algo(int roll)
     {
         int size = sizeof(arr) / sizeof(arr[0]);
@@ -49,6 +96,7 @@ private:
 public:
     void displayStudents()
     {
+        sort_students();
         int size = sizeof(arr) / sizeof(arr[0]);
         for (int i = 0; i < size; i++)
         {
@@ -74,10 +122,10 @@ public:
             cout << "Not Possible to delete\n";
             return;
         }
-        int size = sizeof(arr) / sizeof(arr[0]);
+        auto size = sizeof(arr) / sizeof(arr[0]);
         Student temp[size];
         int j = 0;
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < int(size); i++)
         {
             if (arr[i].roll != roll)
             {
@@ -90,12 +138,12 @@ public:
         {
             arr[i] = temp[i];
         }
-        index += 1;
+        index -= 1;
     }
     void addStudent(int roll, string name, float sgpa)
     {
         Student s(roll, name, sgpa);
-        if (index == size(arr))
+        if (index >= int(size(arr)))
         {
             cout << "Maximum Capacity of Students Reached\n";
         }
@@ -103,8 +151,8 @@ public:
         {
             arr[index] = s;
             cout << "Student Inserted Successfully\n";
+            index += 1;
         }
-        index+=1;
     }
 };
 int main()

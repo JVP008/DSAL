@@ -26,7 +26,7 @@ public:
     // check if roll number is already in file
     bool Exists(int roll)
     {
-        ifstream fin(fileName.c_str());
+        ifstream fin(fileName);
         Record r;
         while (fin >> r.roll >> r.name >> r.marks)
         {
@@ -51,14 +51,14 @@ public:
         cin >> r.name;
         cout << "Enter the marks: ";
         cin >> r.marks;
-        ofstream fout(fileName.c_str(), ios::app);
+        ofstream fout(fileName, ios::app);
         fout << r.roll << " " << r.name << " " << r.marks << "\n";
         cout << "Record Added Successfully\n";
     }
     // Display all records
     void Display()
     {
-        ifstream fin(fileName.c_str());
+        ifstream fin(fileName,ios::in);
         Record r;
         bool found = false;
         while (fin >> r.roll >> r.name >> r.marks)
@@ -74,7 +74,7 @@ public:
     // Search a record
     void Search(int roll)
     {
-        ifstream fin(fileName.c_str());
+        ifstream fin(fileName);
         Record r;
         while (fin >> r.roll >> r.name >> r.marks)
         {
@@ -90,7 +90,7 @@ public:
     // Delete a record
     void Delete(int roll)
     {
-        ifstream fin(fileName.c_str());
+        ifstream fin(fileName);
         ofstream fout("temp.txt");
         Record r;
         bool found = false;
@@ -107,8 +107,8 @@ public:
         }
         fin.close();
         fout.close();
-        remove(fileName.c_str());
-        rename("temp.txt", fileName.c_str());
+        filesystem::remove(fileName);
+        filesystem::rename("temp.txt", fileName);
         if (found)
         {
             cout << "Deleted Successfully\n";

@@ -35,7 +35,7 @@ int partiton (int arr[],int s,int e){
     return pivot_index;
 }
 void quick_sort(int arr[],int s,int e){
-    if (s>=e){ //what if there are two elements remaining
+    if (s>=e){ //no need to sort 1 element
         return ;
     }
     int pindex = partiton(arr,s,e);
